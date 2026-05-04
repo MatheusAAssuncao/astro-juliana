@@ -186,6 +186,3 @@ export async function downloadImage(
 		return getImageUrl(imageId, 800);
 	}
 }
-		return getImageUrl(imageId, 800);
-	}
-}
