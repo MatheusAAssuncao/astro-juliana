@@ -15,7 +15,7 @@ const historiaData = await getHistoria();
 let historiaImagemPath = undefined;
 
 if (historiaData?.imagem) {
-  historiaImagemPath = await downloadImage(historiaData.imagem, 'public/images/ast.webp');
+  historiaImagemPath = await downloadImage(historiaData.imagem, 'public/images/sobre/ast.webp');
 }
 
 const aboutProps = historiaData ? {
