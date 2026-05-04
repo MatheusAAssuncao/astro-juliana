@@ -162,22 +162,30 @@ export async function downloadImage(
 		}
 
 		const buffer = await response.arrayBuffer();
-		const dir = path.dirname(outputPath);
 		
-		// Cria diretório se não existir
-		if (!fs.existsSync(dir)) {
-			fs.mkdirSync(dir, { recursive: true });
+		const publicPath = outputPath;
+		const distPath = outputPath.replace('public/', 'dist/');
+		
+		const publicDir = path.dirname(publicPath);
+		if (!fs.existsSync(publicDir)) {
+			fs.mkdirSync(publicDir, { recursive: true });
 		}
-
-		fs.writeFileSync(outputPath, Buffer.from(buffer));
+		fs.writeFileSync(publicPath, Buffer.from(buffer));
+		console.log(`✅ Imagem salva em public: ${publicPath}`);
 		
-		console.log(`✅ Imagem salva: ${outputPath}`);
+		const distDir = path.dirname(distPath);
+		if (!fs.existsSync(distDir)) {
+			fs.mkdirSync(distDir, { recursive: true });
+		}
+		fs.writeFileSync(distPath, Buffer.from(buffer));
+		console.log(`✅ Imagem salva em dist: ${distPath}`);
 		
-		// Retorna caminho relativo ao public
 		return outputPath.replace(/^public\//, '/');
 	} catch (error) {
 		console.error('❌ Erro ao baixar imagem:', error);
-		// Fallback para URL externa
+		return getImageUrl(imageId, 800);
+	}
+}
 		return getImageUrl(imageId, 800);
 	}
 }

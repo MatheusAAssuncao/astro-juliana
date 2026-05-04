@@ -12,8 +12,14 @@ import { getHistoria, getContato, getServicos, downloadImage } from "../lib/dire
 import { gerarSlug } from "../lib/helpers";
 
 const historiaData = await getHistoria();
+let historiaImagemPath = undefined;
+
+if (historiaData?.imagem) {
+  historiaImagemPath = await downloadImage(historiaData.imagem, 'public/images/ast.webp');
+}
+
 const aboutProps = historiaData ? {
-  imagem: await downloadImage(historiaData.imagem, 'public/images/ast.webp'),
+  imagem: historiaImagemPath,
   titulo: historiaData.titulo,
   conteudo: historiaData.conteudo,
 } : {};
