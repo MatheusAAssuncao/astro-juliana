@@ -1,0 +1,38 @@
+---
+import ServicoLayout from "../../layouts/ServicoLayout.astro";
+import { getServicos, downloadImage } from "../../lib/directus";
+import { gerarSlug } from "../../lib/helpers";
+
+export async function getStaticPaths() {
+  const servicos = await getServicos();
+  
+  return await Promise.all(
+    servicos.map(async (servico) => {
+      const slug = gerarSlug(servico.titulo);
+      const imagemPath = servico.imagem 
+        ? await downloadImage(servico.imagem, `public/images/servicos/${slug}.webp`)
+        : undefined;
+      
+      return {
+        params: { slug },
+        props: {
+          titulo: servico.titulo,
+          subtitulo: servico.subtitulo,
+          descricao: servico.descricao,
+          conteudo: servico.conteudo,
+          imagem: imagemPath,
+        },
+      };
+    })
+  );
+}
+
+const { titulo, subtitulo, conteudo, imagem } = Astro.props;
+---
+
+<ServicoLayout 
+  titulo={titulo} 
+  subtitulo={subtitulo} 
+  imagem={imagem} 
+  conteudo={conteudo} 
+/>

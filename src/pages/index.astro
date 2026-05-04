@@ -1,17 +1,75 @@
 ---
+import "../styles/globals.css";
+import { Navbar } from "../components/Navbar";
+import { Hero } from "../components/Hero";
+import { About } from "../components/About";
+import { Services } from "../components/Services";
+import { MapaAreas } from "../components/MapaAreas";
+import { Diferencial } from "../components/Diferencial";
+import { Metodologia } from "../components/Metodologia";
+import { Footer } from "../components/Footer";
+import { getHistoria, getContato, getServicos, downloadImage } from "../lib/directus";
+import { gerarSlug } from "../lib/helpers";
 
+const historiaData = await getHistoria();
+const aboutProps = historiaData ? {
+  imagem: await downloadImage(historiaData.imagem, 'public/images/historia.webp'),
+  titulo: historiaData.titulo,
+  conteudo: historiaData.conteudo,
+} : {};
+
+const contatoData = await getContato();
+const contatoProps = contatoData ? {
+  telefone: contatoData.telefone,
+  instagram: contatoData.instagram,
+} : {};
+
+// Buscar serviços do Directus
+const servicosData = await getServicos();
+const servicos = servicosData.map((servico) => ({
+  icone: servico.icone,
+  titulo: servico.titulo,
+  subtitulo: servico.subtitulo,
+  descricao: servico.descricao,
+  href: `/servicos/${gerarSlug(servico.titulo)}`,
+}));
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<!doctype html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juliana Tardivo · Astrologia Humanizada — Mapa Astral & Revolução Solar</title>
+    <meta
+      name="description"
+      content="Consultas de astrologia humanizada com Juliana Tardivo: Mapa Astral completo, Revolução Solar e atendimento online via Zoom com documentação em PDF."
+    />
+    <meta property="og:title" content="Juliana Tardivo · Astrologia Humanizada" />
+    <meta
+      property="og:description"
+      content="Mapa Astral, Revolução Solar e uma joia exclusiva criada a partir do seu desenho astrológico."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="dark">
+    <div class="relative min-h-screen text-foreground overflow-x-hidden">
+      <Navbar client:load />
+      <main>
+        <Hero client:load />
+        <About client:visible {...aboutProps} />
+        <Services client:visible servicos={servicos} />
+        <MapaAreas client:visible />
+        <Diferencial client:visible />
+        <Metodologia client:visible />
+      </main>
+      <Footer client:visible {...contatoProps} />
+    </div>
+  </body>
 </html>
