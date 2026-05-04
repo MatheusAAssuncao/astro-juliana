@@ -1,4 +1,6 @@
 import { createDirectus, readItems, rest, staticToken } from '@directus/sdk';
+import fs from 'node:fs';
+import path from 'node:path';
 
 // ============================================
 // INTERFACES DO DIRECTUS
@@ -152,8 +154,6 @@ export async function downloadImage(
 	outputPath: string
 ): Promise<string> {
 	try {
-		const fs = await import('fs');
-		const path = await import('path');
 		const imageUrl = getImageUrl(imageId, 800);
 		
 		const response = await fetch(imageUrl);
@@ -171,10 +171,12 @@ export async function downloadImage(
 
 		fs.writeFileSync(outputPath, Buffer.from(buffer));
 		
+		console.log(`✅ Imagem salva: ${outputPath}`);
+		
 		// Retorna caminho relativo ao public
 		return outputPath.replace(/^public\//, '/');
 	} catch (error) {
-		console.error('Erro ao baixar imagem:', error);
+		console.error('❌ Erro ao baixar imagem:', error);
 		// Fallback para URL externa
 		return getImageUrl(imageId, 800);
 	}
