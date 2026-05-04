@@ -13,7 +13,7 @@ import { gerarSlug } from "../lib/helpers";
 
 const historiaData = await getHistoria();
 const aboutProps = historiaData ? {
-  imagem: await downloadImage(historiaData.imagem, 'public/images/historia.webp'),
+  imagem: await downloadImage(historiaData.imagem, 'public/images/ast.webp'),
   titulo: historiaData.titulo,
   conteudo: historiaData.conteudo,
 } : {};

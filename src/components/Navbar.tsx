@@ -3,10 +3,10 @@ import { Sparkles, Menu, X } from "lucide-react";
 import { WHATSAPP_URLS } from "../lib/helpers.tsx";
 
 const links = [
-  { href: "#sobre", label: "Sobre" },
-  { href: "#servicos", label: "Serviços" },
-  { href: "#mapa", label: "Mapa Astral" },
-  { href: "#metodologia", label: "Atendimento" },
+  { href: "/#sobre", label: "Sobre" },
+  { href: "/#servicos", label: "Serviços" },
+  { href: "/#mapa", label: "Mapa Astral" },
+  { href: "/#metodologia", label: "Atendimento" },
 ];
 
 export function Navbar() {
@@ -32,7 +32,7 @@ export function Navbar() {
             scrolled ? "glass-strong shadow-elegant" : "glass"
           }`}
         >
-          <a href="#top" className="flex items-center gap-2 group">
+          <a href="/" className="flex items-center gap-2 group">
             <Sparkles className="h-5 w-5 text-gold transition-transform group-hover:rotate-12" />
             <span className="font-display text-xl tracking-wide">
               Juliana <span className="text-gradient-gold">Tardivo</span>
